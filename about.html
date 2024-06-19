@@ -1,0 +1,78 @@
+<!--
+元梦之星工具箱 - 关于页面
+Copyright (C) 2024  [xkk1](https://github.com/xkk1)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" class="mdui-theme-auto">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <title>关于 - 元梦之星工具箱</title>
+    <!-- mdui -->
+    <link rel="stylesheet" href="./libs/mdui/mdui.css" />
+    <script src="./libs/mdui/mdui.global.js"></script>
+    <!-- @mdui/icons 图标组件库 -->
+    <script src="./libs/mdui/mdui-icons.bundle.js"></script>
+    <!-- 工具函数 -->
+    <script src="./js/utilities.js"></script>
+    <!-- 网站整体框架 -->
+    <link rel="stylesheet" href="./css/site-layout.css" />
+    <script src="./js/site-layout.js"></script>
+    <!-- about -->
+     <script src="./js/about.js"></script>
+</head>
+<body>
+    <site-layout data-title="关于 - 元梦之星工具箱" current-page-path="./about.html">
+        <main class="container mdui-prose">
+            <div class="text-align-center">
+                <img src="./img/icon-96x96.png" alt="元梦之星工具箱" style="max-width: 96px; border-radius: 50%;" loading="lazy" />
+            </div>
+            <p class="text-align-center" style="line-height: 1.5rem;">
+                <a href="https://github.com/xkk1/tencent-letsgo-tools" target="_blank">
+                    <mdui-icon-github></mdui-icon-github>
+                    <span style="font-size: 1.25rem; font-weight: bold;">元梦之星工具箱</span>
+                    <span>v0.0.1</span>
+                </a>
+                <br />
+                由 <a href="https://github.com/xkk1" target="_blank">小喾苦</a> 制作
+                <br />
+                <mdui-tooltip variant="plain" placement="auto" close-delay="150">
+                    <span>QQ 群：<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=4r-RYejLgfsEApX2DHXeWK9ZMr4Pl8r-&authKey=tBYRc5MCMsmJXKJ7UaOqhidLDQHr3Gb%2BcW%2FaujaeCZYlEc2KzFT%2F7p%2BcEpmT8lrb&noverify=0&group_code=595103909" target="_blank">595103909</a></span>
+                    <img slot="content" src="./img/QQ-group-595103909.png" alt="QQ群：595103909" loading="lazy" />
+                </mdui-tooltip>
+            </p>
+            <h2>依赖</h2>
+            <div class="row">
+                <item-card class="col-mobile-6 col-desktop-3" href="https://www.mdui.org/zh-cn/">MDUI</item-card>
+                <item-card class="col-mobile-6 col-desktop-3" href="https://marked.js.org/">Marked</item-card>
+            </div>
+            <p>
+                
+            </p>
+            <h2>赞助</h2>
+            <p>
+                <mdui-button variant="tonal" onclick="openImageDialog('./img/xkk1/Alipay.jpg', '支付宝 扫一扫 捐赠')">支付宝</mdui-button>
+                <mdui-button variant="tonal" onclick="openImageDialog('./img/xkk1/WeChat.png', '微信 扫一扫 捐赠')">微信</mdui-button>
+            </p>
+        </main>
+    </site-layout>
+    <mdui-dialog id="image-dialog" close-on-esc close-on-overlay-click headline="">
+        <img src="./img/icon-200x200.png" alt="" loading="lazy" class="qrcode-item" style="width: 100%;">
+    </mdui-dialog>
+</body>
+</html>

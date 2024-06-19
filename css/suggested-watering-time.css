@@ -1,0 +1,54 @@
+#ask-crop-information-dialog-open-button {
+    display: block;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1;
+}
+
+.row .col select {
+    width: 100%;
+    height: 100%;
+}
+
+/* 缩小对话框 mdui-select 选项的 padding，放下更多的文字 */
+mdui-dialog mdui-menu-item::part(container) {
+    padding: 0;
+}
+
+/* 缩小对话框 mdui-select 选项的图标的外边距，放下更多的文字 */
+mdui-dialog mdui-menu-item::part(icon),
+mdui-dialog mdui-menu-item::part(selected-icon) {
+    margin-right: 0;
+}
+
+.row p.dialog-p {
+    width: 100%;
+    margin: auto;
+    line-height: 100%;
+}
+
+.m-y-1rem {
+    margin: 1rem 0;
+}
+
+.seconds-input-container,
+#calculation-time-container {
+    display: none;
+}
+
+result-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* 手机等小屏幕移动设备 */
+@media (max-width: 839px) {
+    result-item { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* 电脑等大屏幕设备 */
+@media (min-width: 840px) {
+    result-item { flex: 0 0 50%; max-width: 50%; }
+}

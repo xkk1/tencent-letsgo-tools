@@ -1,0 +1,460 @@
+<!--
+元梦之星工具箱 - 浇水建议
+Copyright (C) 2024  [xkk1](https://github.com/xkk1)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" class="mdui-theme-auto">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../favicon.ico" />
+    <link rel="manifest" href="../manifest.webmanifest" />
+    <title>浇水建议</title>
+    <!-- mdui -->
+    <link rel="stylesheet" href="../libs/mdui/mdui.css" />
+    <script src="../libs/mdui/mdui.global.js"></script>
+    <!-- @mdui/icons 图标组件库 -->
+    <script src="../libs/mdui/mdui-icons.bundle.js"></script>
+    <!-- marked -->
+    <script src="../libs/marked/marked.min.js"></script>
+    <!-- marked-gfm-heading-id -->
+    <script src="../libs/marked/marked-gfm-heading-id.umd.js"></script>
+    <script>marked.use(markedGfmHeadingId.gfmHeadingId());</script>
+    <!-- 工具函数 -->
+    <script src="../js/utilities.js"></script>
+    <!-- 网站整体框架 -->
+    <link rel="stylesheet" href="../css/site-layout.css" />
+    <script src="../js/site-layout.js"></script>
+    <!-- 浇水建议 -->
+    <link rel="stylesheet" href="../css/suggested-watering-time.css" />
+    <script src="../js/suggested-watering-time.js"></script>
+</head>
+<body>
+    <mdui-fab id="ask-crop-information-dialog-open-button">
+        <mdui-icon-edit slot="icon"></mdui-icon-edit>
+    </mdui-fab>
+    <mdui-dialog id="ask-crop-information-dialog" close-on-overlay-click close-on-esc>
+        <mdui-top-app-bar slot="header">
+            <mdui-button-icon id="ask-crop-information-dialog-close-button"><mdui-icon-close></mdui-icon-close></mdui-button-icon>
+            <mdui-top-app-bar-title>作物信息</mdui-top-app-bar-title>
+            <mdui-button variant="filled" id="generate-watering-suggestion-button">生成建议</mdui-button>
+        </mdui-top-app-bar>
+        <div class="row m-y-1rem">
+            <div class="col-2 col-mobile-12 flex justify-content-center">
+                <p class="dialog-p text-align-right">作物类型:</p>
+            </div>
+            <div class="col col-mobile-12">
+                <mdui-select name="totalMaturityTimeSelect" id="totalMaturityTimeSelect" value="3600">
+                    <mdui-menu-item value="3600">1小时成熟(向日葵、花菜、大葱、紫葡萄、香菇、甜椒)</mdui-menu-item>
+                    <mdui-menu-item value="21600">6小时成熟(麦子、冬瓜、白萝卜、蓝莓、胡萝卜、娃娃菜)</mdui-menu-item>
+                    <mdui-menu-item value="43200">12小时成熟(白菜、西瓜、甜瓜、紫薯、青葡萄)</mdui-menu-item>
+                    <mdui-menu-item value="57600">16小时成熟-金币作物(粉色风铃草、黄色郁金香、红色马蹄莲、粉色绣球、红玫瑰)</mdui-menu-item>
+                    <mdui-menu-item value="115200">1天8小时成熟(草莓、生菜、菠萝、土豆、红洋葱)</mdui-menu-item>
+                </mdui-select>
+            </div>
+        </div>
+        <div class="row m-y-1rem">
+            <div class="col">
+                <mdui-select name="remainingMaturityTimeDaySelect" id="remainingMaturityTimeDaySelect" value="0">
+                    <mdui-menu-item value="0">0天</mdui-menu-item>
+                    <mdui-menu-item value="1">1天</mdui-menu-item>
+                </mdui-select>
+            </div>
+            <div class="col">
+                <mdui-select name="remainingMaturityTimeHourSelect" id="remainingMaturityTimeHourSelect" value="0">
+                    <mdui-menu-item value="0">0小时</mdui-menu-item>
+                    <mdui-menu-item value="1">1小时</mdui-menu-item>
+                    <mdui-menu-item value="2">2小时</mdui-menu-item>
+                    <mdui-menu-item value="3">3小时</mdui-menu-item>
+                    <mdui-menu-item value="4">4小时</mdui-menu-item>
+                    <mdui-menu-item value="5">5小时</mdui-menu-item>
+                    <mdui-menu-item value="6">6小时</mdui-menu-item>
+                    <mdui-menu-item value="7">7小时</mdui-menu-item>
+                    <mdui-menu-item value="8">8小时</mdui-menu-item>
+                    <mdui-menu-item value="9">9小时</mdui-menu-item>
+                    <mdui-menu-item value="10">10小时</mdui-menu-item>
+                    <mdui-menu-item value="11">11小时</mdui-menu-item>
+                    <mdui-menu-item value="12">12小时</mdui-menu-item>
+                    <mdui-menu-item value="13">13小时</mdui-menu-item>
+                    <mdui-menu-item value="14">14小时</mdui-menu-item>
+                    <mdui-menu-item value="15">15小时</mdui-menu-item>
+                    <mdui-menu-item value="16">16小时</mdui-menu-item>
+                    <mdui-menu-item value="17">17小时</mdui-menu-item>
+                    <mdui-menu-item value="18">18小时</mdui-menu-item>
+                    <mdui-menu-item value="19">19小时</mdui-menu-item>
+                    <mdui-menu-item value="20">20小时</mdui-menu-item>
+                    <mdui-menu-item value="21">21小时</mdui-menu-item>
+                    <mdui-menu-item value="22">22小时</mdui-menu-item>
+                    <mdui-menu-item value="23">23小时</mdui-menu-item>
+                </mdui-select>
+            </div>
+            <div class="col">
+                <mdui-select name="remainingMaturityTimeMinuteSelect" id="remainingMaturityTimeMinuteSelect" value="0">
+                    <mdui-menu-item value="0">0分钟</mdui-menu-item>
+                    <mdui-menu-item value="1">1分钟</mdui-menu-item>
+                    <mdui-menu-item value="2">2分钟</mdui-menu-item>
+                    <mdui-menu-item value="3">3分钟</mdui-menu-item>
+                    <mdui-menu-item value="4">4分钟</mdui-menu-item>
+                    <mdui-menu-item value="5">5分钟</mdui-menu-item>
+                    <mdui-menu-item value="6">6分钟</mdui-menu-item>
+                    <mdui-menu-item value="7">7分钟</mdui-menu-item>
+                    <mdui-menu-item value="8">8分钟</mdui-menu-item>
+                    <mdui-menu-item value="9">9分钟</mdui-menu-item>
+                    <mdui-menu-item value="10">10分钟</mdui-menu-item>
+                    <mdui-menu-item value="11">11分钟</mdui-menu-item>
+                    <mdui-menu-item value="12">12分钟</mdui-menu-item>
+                    <mdui-menu-item value="13">13分钟</mdui-menu-item>
+                    <mdui-menu-item value="14">14分钟</mdui-menu-item>
+                    <mdui-menu-item value="15">15分钟</mdui-menu-item>
+                    <mdui-menu-item value="16">16分钟</mdui-menu-item>
+                    <mdui-menu-item value="17">17分钟</mdui-menu-item>
+                    <mdui-menu-item value="18">18分钟</mdui-menu-item>
+                    <mdui-menu-item value="19">19分钟</mdui-menu-item>
+                    <mdui-menu-item value="20">20分钟</mdui-menu-item>
+                    <mdui-menu-item value="21">21分钟</mdui-menu-item>
+                    <mdui-menu-item value="22">22分钟</mdui-menu-item>
+                    <mdui-menu-item value="23">23分钟</mdui-menu-item>
+                    <mdui-menu-item value="24">24分钟</mdui-menu-item>
+                    <mdui-menu-item value="25">25分钟</mdui-menu-item>
+                    <mdui-menu-item value="26">26分钟</mdui-menu-item>
+                    <mdui-menu-item value="27">27分钟</mdui-menu-item>
+                    <mdui-menu-item value="28">28分钟</mdui-menu-item>
+                    <mdui-menu-item value="29">29分钟</mdui-menu-item>
+                    <mdui-menu-item value="30">30分钟</mdui-menu-item>
+                    <mdui-menu-item value="31">31分钟</mdui-menu-item>
+                    <mdui-menu-item value="32">32分钟</mdui-menu-item>
+                    <mdui-menu-item value="33">33分钟</mdui-menu-item>
+                    <mdui-menu-item value="34">34分钟</mdui-menu-item>
+                    <mdui-menu-item value="35">35分钟</mdui-menu-item>
+                    <mdui-menu-item value="36">36分钟</mdui-menu-item>
+                    <mdui-menu-item value="37">37分钟</mdui-menu-item>
+                    <mdui-menu-item value="38">38分钟</mdui-menu-item>
+                    <mdui-menu-item value="39">39分钟</mdui-menu-item>
+                    <mdui-menu-item value="40">40分钟</mdui-menu-item>
+                    <mdui-menu-item value="41">41分钟</mdui-menu-item>
+                    <mdui-menu-item value="42">42分钟</mdui-menu-item>
+                    <mdui-menu-item value="43">43分钟</mdui-menu-item>
+                    <mdui-menu-item value="44">44分钟</mdui-menu-item>
+                    <mdui-menu-item value="45">45分钟</mdui-menu-item>
+                    <mdui-menu-item value="46">46分钟</mdui-menu-item>
+                    <mdui-menu-item value="47">47分钟</mdui-menu-item>
+                    <mdui-menu-item value="48">48分钟</mdui-menu-item>
+                    <mdui-menu-item value="49">49分钟</mdui-menu-item>
+                    <mdui-menu-item value="50">50分钟</mdui-menu-item>
+                    <mdui-menu-item value="51">51分钟</mdui-menu-item>
+                    <mdui-menu-item value="52">52分钟</mdui-menu-item>
+                    <mdui-menu-item value="53">53分钟</mdui-menu-item>
+                    <mdui-menu-item value="54">54分钟</mdui-menu-item>
+                    <mdui-menu-item value="55">55分钟</mdui-menu-item>
+                    <mdui-menu-item value="56">56分钟</mdui-menu-item>
+                    <mdui-menu-item value="57">57分钟</mdui-menu-item>
+                    <mdui-menu-item value="58">58分钟</mdui-menu-item>
+                    <mdui-menu-item value="59">59分钟</mdui-menu-item>
+                </mdui-select>
+            </div>
+            <div class="col seconds-input-container">
+                <mdui-select name="remainingMaturityTimeSecondSelect" id="remainingMaturityTimeSecondSelect" value="0">
+                    <mdui-menu-item value="0">0秒</mdui-menu-item>
+                    <mdui-menu-item value="1">1秒</mdui-menu-item>
+                    <mdui-menu-item value="2">2秒</mdui-menu-item>
+                    <mdui-menu-item value="3">3秒</mdui-menu-item>
+                    <mdui-menu-item value="4">4秒</mdui-menu-item>
+                    <mdui-menu-item value="5">5秒</mdui-menu-item>
+                    <mdui-menu-item value="6">6秒</mdui-menu-item>
+                    <mdui-menu-item value="7">7秒</mdui-menu-item>
+                    <mdui-menu-item value="8">8秒</mdui-menu-item>
+                    <mdui-menu-item value="9">9秒</mdui-menu-item>
+                    <mdui-menu-item value="10">10秒</mdui-menu-item>
+                    <mdui-menu-item value="11">11秒</mdui-menu-item>
+                    <mdui-menu-item value="12">12秒</mdui-menu-item>
+                    <mdui-menu-item value="13">13秒</mdui-menu-item>
+                    <mdui-menu-item value="14">14秒</mdui-menu-item>
+                    <mdui-menu-item value="15">15秒</mdui-menu-item>
+                    <mdui-menu-item value="16">16秒</mdui-menu-item>
+                    <mdui-menu-item value="17">17秒</mdui-menu-item>
+                    <mdui-menu-item value="18">18秒</mdui-menu-item>
+                    <mdui-menu-item value="19">19秒</mdui-menu-item>
+                    <mdui-menu-item value="20">20秒</mdui-menu-item>
+                    <mdui-menu-item value="21">21秒</mdui-menu-item>
+                    <mdui-menu-item value="22">22秒</mdui-menu-item>
+                    <mdui-menu-item value="23">23秒</mdui-menu-item>
+                    <mdui-menu-item value="24">24秒</mdui-menu-item>
+                    <mdui-menu-item value="25">25秒</mdui-menu-item>
+                    <mdui-menu-item value="26">26秒</mdui-menu-item>
+                    <mdui-menu-item value="27">27秒</mdui-menu-item>
+                    <mdui-menu-item value="28">28秒</mdui-menu-item>
+                    <mdui-menu-item value="29">29秒</mdui-menu-item>
+                    <mdui-menu-item value="30">30秒</mdui-menu-item>
+                    <mdui-menu-item value="31">31秒</mdui-menu-item>
+                    <mdui-menu-item value="32">32秒</mdui-menu-item>
+                    <mdui-menu-item value="33">33秒</mdui-menu-item>
+                    <mdui-menu-item value="34">34秒</mdui-menu-item>
+                    <mdui-menu-item value="35">35秒</mdui-menu-item>
+                    <mdui-menu-item value="36">36秒</mdui-menu-item>
+                    <mdui-menu-item value="37">37秒</mdui-menu-item>
+                    <mdui-menu-item value="38">38秒</mdui-menu-item>
+                    <mdui-menu-item value="39">39秒</mdui-menu-item>
+                    <mdui-menu-item value="40">40秒</mdui-menu-item>
+                    <mdui-menu-item value="41">41秒</mdui-menu-item>
+                    <mdui-menu-item value="42">42秒</mdui-menu-item>
+                    <mdui-menu-item value="43">43秒</mdui-menu-item>
+                    <mdui-menu-item value="44">44秒</mdui-menu-item>
+                    <mdui-menu-item value="45">45秒</mdui-menu-item>
+                    <mdui-menu-item value="46">46秒</mdui-menu-item>
+                    <mdui-menu-item value="47">47秒</mdui-menu-item>
+                    <mdui-menu-item value="48">48秒</mdui-menu-item>
+                    <mdui-menu-item value="49">49秒</mdui-menu-item>
+                    <mdui-menu-item value="50">50秒</mdui-menu-item>
+                    <mdui-menu-item value="51">51秒</mdui-menu-item>
+                    <mdui-menu-item value="52">52秒</mdui-menu-item>
+                    <mdui-menu-item value="53">53秒</mdui-menu-item>
+                    <mdui-menu-item value="54">54秒</mdui-menu-item>
+                    <mdui-menu-item value="55">55秒</mdui-menu-item>
+                    <mdui-menu-item value="56">56秒</mdui-menu-item>
+                    <mdui-menu-item value="57">57秒</mdui-menu-item>
+                    <mdui-menu-item value="58">58秒</mdui-menu-item>
+                    <mdui-menu-item value="59">59秒</mdui-menu-item>
+                </mdui-select> 
+            </div>
+            <div class="col-2 col-mobile-12 flex justify-content-center">
+                <p class="dialog-p text-align-left">后成熟</p>
+            </div>
+        </div>
+        <div class="row m-y-1rem">
+            <div class="col-3 col-mobile-12 flex justify-content-center">
+                <p class="dialog-p text-align-right">水分还能维持</p>
+            </div>
+            <!-- <div class="col"> 水分不可能保持超过一天
+                <mdui-select name="remainingWaterDurationDaySelect" id="remainingWaterDurationDaySelect" value="0">
+                    <mdui-menu-item value="0">0天</mdui-menu-item>
+                    <mdui-menu-item value="1">1天</mdui-menu-item>
+                </mdui-select>
+            </div> -->
+            <div class="col">
+                <mdui-select name="remainingWaterDurationHourSelect" id="remainingWaterDurationHourSelect" value="0">
+                    <mdui-menu-item value="0">0小时</mdui-menu-item>
+                    <mdui-menu-item value="1">1小时</mdui-menu-item>
+                    <mdui-menu-item value="2">2小时</mdui-menu-item>
+                    <mdui-menu-item value="3">3小时</mdui-menu-item>
+                    <mdui-menu-item value="4">4小时</mdui-menu-item>
+                    <mdui-menu-item value="5">5小时</mdui-menu-item>
+                    <mdui-menu-item value="6">6小时</mdui-menu-item>
+                    <mdui-menu-item value="7">7小时</mdui-menu-item>
+                    <mdui-menu-item value="8">8小时</mdui-menu-item>
+                    <mdui-menu-item value="9">9小时</mdui-menu-item>
+                    <mdui-menu-item value="10">10小时</mdui-menu-item>
+                    <mdui-menu-item value="11">11小时</mdui-menu-item>
+                    <mdui-menu-item value="12">12小时</mdui-menu-item>
+                    <mdui-menu-item value="13">13小时</mdui-menu-item>
+                    <mdui-menu-item value="14">14小时</mdui-menu-item>
+                    <mdui-menu-item value="15">15小时</mdui-menu-item>
+                    <mdui-menu-item value="16">16小时</mdui-menu-item>
+                    <mdui-menu-item value="17">17小时</mdui-menu-item>
+                    <mdui-menu-item value="18">18小时</mdui-menu-item>
+                    <mdui-menu-item value="19">19小时</mdui-menu-item>
+                    <mdui-menu-item value="20">20小时</mdui-menu-item>
+                    <mdui-menu-item value="21">21小时</mdui-menu-item>
+                    <mdui-menu-item value="22">22小时</mdui-menu-item>
+                    <mdui-menu-item value="23">23小时</mdui-menu-item>
+                </mdui-select>
+            </div>
+            <div class="col">
+                <mdui-select name="remainingWaterDurationMinuteSelect" id="remainingWaterDurationMinuteSelect" value="0">
+                    <mdui-menu-item value="0">0分钟</mdui-menu-item>
+                    <mdui-menu-item value="1">1分钟</mdui-menu-item>
+                    <mdui-menu-item value="2">2分钟</mdui-menu-item>
+                    <mdui-menu-item value="3">3分钟</mdui-menu-item>
+                    <mdui-menu-item value="4">4分钟</mdui-menu-item>
+                    <mdui-menu-item value="5">5分钟</mdui-menu-item>
+                    <mdui-menu-item value="6">6分钟</mdui-menu-item>
+                    <mdui-menu-item value="7">7分钟</mdui-menu-item>
+                    <mdui-menu-item value="8">8分钟</mdui-menu-item>
+                    <mdui-menu-item value="9">9分钟</mdui-menu-item>
+                    <mdui-menu-item value="10">10分钟</mdui-menu-item>
+                    <mdui-menu-item value="11">11分钟</mdui-menu-item>
+                    <mdui-menu-item value="12">12分钟</mdui-menu-item>
+                    <mdui-menu-item value="13">13分钟</mdui-menu-item>
+                    <mdui-menu-item value="14">14分钟</mdui-menu-item>
+                    <mdui-menu-item value="15">15分钟</mdui-menu-item>
+                    <mdui-menu-item value="16">16分钟</mdui-menu-item>
+                    <mdui-menu-item value="17">17分钟</mdui-menu-item>
+                    <mdui-menu-item value="18">18分钟</mdui-menu-item>
+                    <mdui-menu-item value="19">19分钟</mdui-menu-item>
+                    <mdui-menu-item value="20">20分钟</mdui-menu-item>
+                    <mdui-menu-item value="21">21分钟</mdui-menu-item>
+                    <mdui-menu-item value="22">22分钟</mdui-menu-item>
+                    <mdui-menu-item value="23">23分钟</mdui-menu-item>
+                    <mdui-menu-item value="24">24分钟</mdui-menu-item>
+                    <mdui-menu-item value="25">25分钟</mdui-menu-item>
+                    <mdui-menu-item value="26">26分钟</mdui-menu-item>
+                    <mdui-menu-item value="27">27分钟</mdui-menu-item>
+                    <mdui-menu-item value="28">28分钟</mdui-menu-item>
+                    <mdui-menu-item value="29">29分钟</mdui-menu-item>
+                    <mdui-menu-item value="30">30分钟</mdui-menu-item>
+                    <mdui-menu-item value="31">31分钟</mdui-menu-item>
+                    <mdui-menu-item value="32">32分钟</mdui-menu-item>
+                    <mdui-menu-item value="33">33分钟</mdui-menu-item>
+                    <mdui-menu-item value="34">34分钟</mdui-menu-item>
+                    <mdui-menu-item value="35">35分钟</mdui-menu-item>
+                    <mdui-menu-item value="36">36分钟</mdui-menu-item>
+                    <mdui-menu-item value="37">37分钟</mdui-menu-item>
+                    <mdui-menu-item value="38">38分钟</mdui-menu-item>
+                    <mdui-menu-item value="39">39分钟</mdui-menu-item>
+                    <mdui-menu-item value="40">40分钟</mdui-menu-item>
+                    <mdui-menu-item value="41">41分钟</mdui-menu-item>
+                    <mdui-menu-item value="42">42分钟</mdui-menu-item>
+                    <mdui-menu-item value="43">43分钟</mdui-menu-item>
+                    <mdui-menu-item value="44">44分钟</mdui-menu-item>
+                    <mdui-menu-item value="45">45分钟</mdui-menu-item>
+                    <mdui-menu-item value="46">46分钟</mdui-menu-item>
+                    <mdui-menu-item value="47">47分钟</mdui-menu-item>
+                    <mdui-menu-item value="48">48分钟</mdui-menu-item>
+                    <mdui-menu-item value="49">49分钟</mdui-menu-item>
+                    <mdui-menu-item value="50">50分钟</mdui-menu-item>
+                    <mdui-menu-item value="51">51分钟</mdui-menu-item>
+                    <mdui-menu-item value="52">52分钟</mdui-menu-item>
+                    <mdui-menu-item value="53">53分钟</mdui-menu-item>
+                    <mdui-menu-item value="54">54分钟</mdui-menu-item>
+                    <mdui-menu-item value="55">55分钟</mdui-menu-item>
+                    <mdui-menu-item value="56">56分钟</mdui-menu-item>
+                    <mdui-menu-item value="57">57分钟</mdui-menu-item>
+                    <mdui-menu-item value="58">58分钟</mdui-menu-item>
+                    <mdui-menu-item value="59">59分钟</mdui-menu-item>
+                </mdui-select>
+            </div>
+            <div class="col seconds-input-container">
+                <mdui-select name="remainingWaterDurationSecondSelect" id="remainingWaterDurationSecondSelect" value="0">
+                    <mdui-menu-item value="0">0秒</mdui-menu-item>
+                    <mdui-menu-item value="1">1秒</mdui-menu-item>
+                    <mdui-menu-item value="2">2秒</mdui-menu-item>
+                    <mdui-menu-item value="3">3秒</mdui-menu-item>
+                    <mdui-menu-item value="4">4秒</mdui-menu-item>
+                    <mdui-menu-item value="5">5秒</mdui-menu-item>
+                    <mdui-menu-item value="6">6秒</mdui-menu-item>
+                    <mdui-menu-item value="7">7秒</mdui-menu-item>
+                    <mdui-menu-item value="8">8秒</mdui-menu-item>
+                    <mdui-menu-item value="9">9秒</mdui-menu-item>
+                    <mdui-menu-item value="10">10秒</mdui-menu-item>
+                    <mdui-menu-item value="11">11秒</mdui-menu-item>
+                    <mdui-menu-item value="12">12秒</mdui-menu-item>
+                    <mdui-menu-item value="13">13秒</mdui-menu-item>
+                    <mdui-menu-item value="14">14秒</mdui-menu-item>
+                    <mdui-menu-item value="15">15秒</mdui-menu-item>
+                    <mdui-menu-item value="16">16秒</mdui-menu-item>
+                    <mdui-menu-item value="17">17秒</mdui-menu-item>
+                    <mdui-menu-item value="18">18秒</mdui-menu-item>
+                    <mdui-menu-item value="19">19秒</mdui-menu-item>
+                    <mdui-menu-item value="20">20秒</mdui-menu-item>
+                    <mdui-menu-item value="21">21秒</mdui-menu-item>
+                    <mdui-menu-item value="22">22秒</mdui-menu-item>
+                    <mdui-menu-item value="23">23秒</mdui-menu-item>
+                    <mdui-menu-item value="24">24秒</mdui-menu-item>
+                    <mdui-menu-item value="25">25秒</mdui-menu-item>
+                    <mdui-menu-item value="26">26秒</mdui-menu-item>
+                    <mdui-menu-item value="27">27秒</mdui-menu-item>
+                    <mdui-menu-item value="28">28秒</mdui-menu-item>
+                    <mdui-menu-item value="29">29秒</mdui-menu-item>
+                    <mdui-menu-item value="30">30秒</mdui-menu-item>
+                    <mdui-menu-item value="31">31秒</mdui-menu-item>
+                    <mdui-menu-item value="32">32秒</mdui-menu-item>
+                    <mdui-menu-item value="33">33秒</mdui-menu-item>
+                    <mdui-menu-item value="34">34秒</mdui-menu-item>
+                    <mdui-menu-item value="35">35秒</mdui-menu-item>
+                    <mdui-menu-item value="36">36秒</mdui-menu-item>
+                    <mdui-menu-item value="37">37秒</mdui-menu-item>
+                    <mdui-menu-item value="38">38秒</mdui-menu-item>
+                    <mdui-menu-item value="39">39秒</mdui-menu-item>
+                    <mdui-menu-item value="40">40秒</mdui-menu-item>
+                    <mdui-menu-item value="41">41秒</mdui-menu-item>
+                    <mdui-menu-item value="42">42秒</mdui-menu-item>
+                    <mdui-menu-item value="43">43秒</mdui-menu-item>
+                    <mdui-menu-item value="44">44秒</mdui-menu-item>
+                    <mdui-menu-item value="45">45秒</mdui-menu-item>
+                    <mdui-menu-item value="46">46秒</mdui-menu-item>
+                    <mdui-menu-item value="47">47秒</mdui-menu-item>
+                    <mdui-menu-item value="48">48秒</mdui-menu-item>
+                    <mdui-menu-item value="49">49秒</mdui-menu-item>
+                    <mdui-menu-item value="50">50秒</mdui-menu-item>
+                    <mdui-menu-item value="51">51秒</mdui-menu-item>
+                    <mdui-menu-item value="52">52秒</mdui-menu-item>
+                    <mdui-menu-item value="53">53秒</mdui-menu-item>
+                    <mdui-menu-item value="54">54秒</mdui-menu-item>
+                    <mdui-menu-item value="55">55秒</mdui-menu-item>
+                    <mdui-menu-item value="56">56秒</mdui-menu-item>
+                    <mdui-menu-item value="57">57秒</mdui-menu-item>
+                    <mdui-menu-item value="58">58秒</mdui-menu-item>
+                    <mdui-menu-item value="59">59秒</mdui-menu-item>
+                </mdui-select> 
+            </div>
+        </div>
+        <div class="row" style="justify-content: space-between;">
+            <div class="col flex justify-content-center">
+                <p class="dialog-p text-align-left">打开高级设置</p>
+            </div>
+            <div class="col text-align-right">
+                <mdui-switch id="open-advanced-settings-switch"></mdui-switch>
+            </div>
+        </div>
+        <div id="advanced-settings-container" style="display: none;">
+            <div class="row" style="justify-content: space-between;">
+                <div class="col flex justify-content-center">
+                    <p class="dialog-p text-align-left">启用秒输入</p>
+                </div>
+                <div class="col text-align-right">
+                    <mdui-switch id="enable-seconds-input-switch"></mdui-switch>
+                </div>
+            </div>
+            
+            <div class="row" style="justify-content: space-between;">
+                <div class="col flex justify-content-center">
+                    <mdui-tooltip>
+                        <p class="dialog-p text-align-left">设置开始时间<mdui-icon-help-outline style="font-size: 1rem;"></mdui-icon-help-outline></p>
+                        <div slot="content">
+                          <div>计算浇水建议时的起始时间，即作物是上面提供状态时的时间。<br />默认时间为当前时间。</div>
+                        </div>
+                    </mdui-tooltip>
+                </div>
+                <div class="col text-align-right">
+                    <mdui-switch id="set-calculation-time-switch"></mdui-switch>
+                </div>
+            </div>
+
+            <div id="calculation-time-container" class="row">
+                <div class="col"><input id="calculation-date-input" type="date" /></div>
+                <div class="col"><input id="calculation-time-input" type="time" /></div>
+                <div class="col text-align-right"><mdui-button id="set-calculation-time-to-now-button">设为现在</mdui-button></div>
+            </div>
+        </div>
+    </mdui-dialog>
+    <site-layout current-page-path="./farm/suggested-watering-time.html">
+        <main class="container">
+            <result-container>
+            </result-container>
+
+            <div class="help">
+                提示：点击右下角“
+                <mdui-fab id="example-ask-crop-information-dialog-open-button" size="small">
+                    <mdui-icon-edit slot="icon"></mdui-icon-edit>
+                </mdui-fab>
+                “图标，设置好作物信息，点击“生成建议”按钮，即可获得浇水建议。
+            </div>
+            <footer>
+                <p>感谢 <span id="thanks-span" style="position: relative; top: 0.6rem;"></span> 提供的浇水算法</p>
+            </footer>
+        </main>
+    </site-layout>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+    "name": "元梦之星工具箱",
+    "short_name": "元梦工具箱",
+    "description": "为星宝们提供的免费开源工具箱",
+    "lang": "zh-CN",
+    "display": "standalone",
+    "start_url": "./",
+    "scope": "./",
+    "icons": [
+        {
+            "src": "./favicon.ico",
+            "sizes": "32x32"
+        },
+        {
+            "src": "./img/icon-36x36.png",
+            "type": "image/png",
+            "sizes": "36x36"
+        },
+        {
+            "src": "./img/icon-48x48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "./img/icon-72x72.png",
+            "type": "image/png",
+            "sizes": "72x72"
+        },
+        {
+            "src": "./img/icon-96x96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "./img/icon-200x200.png",
+            "type": "image/png",
+            "sizes": "200x200"
+        }
+    ]
+}
+  
