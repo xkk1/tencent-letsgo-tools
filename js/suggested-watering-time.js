@@ -973,10 +973,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalMaturityTime, remainingMaturityTime, remainingWaterDuration, calculationTime
             );
             // 修改地址栏 get 参数
-            changeURLStatic("totalMaturityTime" , totalMaturityTime);
-            changeURLStatic("remainingMaturityTime" , remainingMaturityTime);
-            changeURLStatic("remainingWaterDuration" , remainingWaterDuration);
-            changeURLStatic("calculationTime" , calculationTime);
+            changeURLStatic("tmt" , totalMaturityTime);
+            changeURLStatic("rmt" , remainingMaturityTime);
+            changeURLStatic("rwd" , remainingWaterDuration);
+            changeURLStatic("ct" , calculationTime);
             // 显示分享链接
             showShareLink();
         } else {
@@ -1001,25 +1001,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return !isNaN(num) && num >= 0 && str === num.toString();
         }
 
-        let totalMaturityTime = getQueryVariable("totalMaturityTime"); // 总成熟时间(s)
+        let totalMaturityTime = getQueryVariable("tmt"); // 总成熟时间(s)
         if (totalMaturityTime === null || !isInteger(totalMaturityTime)) {
             return;
         }
         totalMaturityTime = parseInt(totalMaturityTime);
 
-        let remainingMaturityTime = getQueryVariable("remainingMaturityTime"); // 剩余成熟时间(s)
+        let remainingMaturityTime = getQueryVariable("rmt"); // 剩余成熟时间(s)
         if (remainingMaturityTime === null || !isInteger(remainingMaturityTime)) {
             return;
         }
         remainingMaturityTime = parseInt(remainingMaturityTime);
 
-        let remainingWaterDuration = getQueryVariable("remainingWaterDuration");  // 剩余水分保持时间(s)
+        let remainingWaterDuration = getQueryVariable("rwd");  // 剩余水分保持时间(s)
         if (remainingWaterDuration === null || !isInteger(remainingWaterDuration)) {
             return;
         }
         remainingWaterDuration = parseInt(remainingWaterDuration);
 
-        let calculationTime = getQueryVariable("calculationTime");
+        let calculationTime = getQueryVariable("ct");
         if (calculationTime === null || !isInteger(calculationTime)) {
             return;
         }
