@@ -1032,6 +1032,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // 显示分享链接
             showShareLink();
         }
+        // 将 URL 参数的值同步为 Select 选中的值
+        document.getElementById("totalMaturityTimeSelect").value = totalMaturityTime + "";
+
+        document.getElementById("remainingMaturityTimeDaySelect").value = parseInt(remainingMaturityTime / (24 * 60 * 60)) + "";
+        document.getElementById("remainingMaturityTimeHourSelect").value = parseInt(remainingMaturityTime % (24 * 60 * 60) / (60 * 60)) + "";
+        document.getElementById("remainingMaturityTimeMinuteSelect").value = parseInt(remainingMaturityTime % (60 * 60) / 60) + "";
+        document.getElementById("remainingMaturityTimeSecondSelect").value = parseInt(remainingMaturityTime % 60) + "";
+        
+        document.getElementById("remainingWaterDurationHourSelect").value = parseInt(remainingWaterDuration / (60 * 60)) + "";
+        document.getElementById("remainingWaterDurationMinuteSelect").value = parseInt(remainingWaterDuration % (60 * 60) / 60) + "";
+        document.getElementById("remainingWaterDurationSecondSelect").value = parseInt(remainingWaterDuration % 60) + "";
     })();
 });
 
