@@ -531,7 +531,7 @@ class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
         let 水分维持剩余时间 = this.remainingWaterDuration / 60;
         let 禁止浇水时间 = this.totalMaturityTime / 30 / 60;
         this.浇水后能收获 = true;
-        if (水分最大维持时间 >= 目前剩余收获时间 && 水分最大维持时间 - 水分维持剩余时间 >= 禁止浇水时间 && 目前剩余收获时间 > (水分最大维持时间 - 水分维持剩余时间) / 4) {
+        if (水分最大维持时间 >= 目前剩余收获时间 && 水分最大维持时间 - 水分维持剩余时间 >= 禁止浇水时间 && 目前剩余收获时间 < (水分最大维持时间 - 水分维持剩余时间) / 4) {
             // 水分最大维持时间 >= 目前剩余收获时间 并且目前浇水后能熟
             this.距离当前时间剩余收获时间 = 0;
         } else if (水分最大维持时间 >= 目前剩余收获时间) {
