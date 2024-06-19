@@ -1,6 +1,6 @@
 # 元梦之星工具箱
 
-**<https:///xkk1.github.io/tencent-letsgo-tools>**
+**<https://xkk1.github.io/tencent-letsgo-tools/>**
 
 为星宝们提供的免费[开源](https://github.com/xkk1/tencent-letsgo-tools)工具箱
 
