@@ -518,7 +518,7 @@ class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
      * 
      * @param {number} totalMaturityTime 该类作物总成熟时间即收获周期(s)
      * @param {number} remainingMaturityTime 作物剩余成熟时间(s)
-     * @param {number} remainingWaterDuration 水分保持剩余时间(s)
+     * @param {number} remainingWaterDuration 水分维持剩余时间(s)
      * @param {number} calculationTime 请求浇水策略计算时间戳
      */
     constructor(totalMaturityTime, remainingMaturityTime, remainingWaterDuration, calculationTime) {
@@ -527,12 +527,19 @@ class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
         let 收获周期 = this.totalMaturityTime / 60;
         let 目前剩余收获时间 = this.remainingMaturityTime / 60;
         let 目前土地湿润剩余时间 = this.remainingWaterDuration / 60;
-        let 水分保持时间 = this.totalMaturityTime / 3 / 60;
-        if (水分保持时间 >= 目前剩余收获时间) {
-            // 此公式仅适用于： 水分保持时间 >= 目前剩余收获时间 并且目前浇水后不能熟
-            this.距离当前时间剩余收获时间 = (12 * 水分保持时间 * 目前剩余收获时间 - 收获周期 * 水分保持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分保持时间 +  收获周期);
+        let 水分最大维持时间 = this.totalMaturityTime / 3 / 60;
+        let 水分维持剩余时间 = this.remainingWaterDuration / 60;
+        let 禁止浇水时间 = this.totalMaturityTime / 30 / 60;
+        this.浇水后能收获 = true;
+        if (水分最大维持时间 >= 目前剩余收获时间 && 水分最大维持时间 - 水分维持剩余时间 >= 禁止浇水时间 && 目前剩余收获时间 > (水分最大维持时间 - 水分维持剩余时间) / 4) {
+            // 水分最大维持时间 >= 目前剩余收获时间 并且目前浇水后能熟
+            this.距离当前时间剩余收获时间 = 0;
+        } else if (水分最大维持时间 >= 目前剩余收获时间) {
+            // 此公式仅适用于： 水分最大维持时间 >= 目前剩余收获时间 并且目前浇水后不能熟
+            this.距离当前时间剩余收获时间 = (12 * 水分最大维持时间 * 目前剩余收获时间 - 收获周期 * 水分最大维持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分最大维持时间 +  收获周期);
         } else {
-            this.距离当前时间剩余收获时间 = NaN;
+            this.浇水后能收获 = false;
+            this.距离当前时间剩余收获时间 = (目前剩余收获时间 - (1 - 水分维持剩余时间 / 水分最大维持时间) / 12 * 收获周期) * 4 / 5;
         }
     }
 
@@ -542,10 +549,10 @@ class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
      * @returns {string} 浇水建议，HTML 格式
      */
     toHTML() {
-        if (isNaN(this.距离当前时间剩余收获时间)) {
-            return "";
+        if (this.浇水后能收获) {
+            return `<p>下次浇水后直接收获时间：${CropInformation.formatSecondsDate(this.calculationTime, this.距离当前时间剩余收获时间 * 60)}</p>`;
         } else {
-            return `<p>下次浇水后直接收获时间：${Xkk1SuggestedWateringTime.formatSecondsDate(this.calculationTime, this.距离当前时间剩余收获时间 * 60)}</p>`;
+            return`<p>剩余收获时间：${CropInformation.formatSecondsDate(this.calculationTime, this.距离当前时间剩余收获时间 * 60)}</p>`
         }
     }
 }
