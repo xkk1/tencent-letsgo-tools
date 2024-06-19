@@ -441,8 +441,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     </mdui-dialog>
     <site-layout current-page-path="./farm/suggested-watering-time.html">
         <main class="container">
-            <result-container>
-            </result-container>
+            <result-container></result-container>
+
+            <div id="share-link-div" style="display: none;" class="text-align-center">
+                <mdui-button id="share-link-button" variant="tonal">
+                    复制分享链接
+                    <mdui-icon-content-copy slot="icon"></mdui-icon-content-copy>
+                </mdui-button>
+            </div>
 
             <div class="help">
                 提示：点击右下角“

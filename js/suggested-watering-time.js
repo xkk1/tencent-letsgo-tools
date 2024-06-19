@@ -498,8 +498,8 @@ class Xkk1SuggestedWateringTime extends SuggestedWateringTimeBase {
 /**
  * 小卿的算法
  * 以下公式所有时间单位均为分钟
- * 距离当前时间剩余收获时间 = (12 * 水分保持时间 * 目前剩余收货时间 - 收获周期 * 水分保持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分保持时间 +  收获周期)
- * 此公式仅适用于： 水分保持时间 >= 目前剩余收货时间
+ * 距离当前时间剩余收获时间 = (12 * 水分保持时间 * 目前剩余收获时间 - 收获周期 * 水分保持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分保持时间 +  收获周期)
+ * 此公式仅适用于： 水分保持时间 >= 目前剩余收获时间
  */
 class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
     /**
@@ -525,12 +525,12 @@ class LubiandewoheniSuggestedWateringTime extends SuggestedWateringTimeBase {
         super(totalMaturityTime, remainingMaturityTime, remainingWaterDuration, calculationTime);
         // 以下时间均以分钟为单位
         let 收获周期 = this.totalMaturityTime / 60;
-        let 目前剩余收货时间 = this.remainingMaturityTime / 60;
+        let 目前剩余收获时间 = this.remainingMaturityTime / 60;
         let 目前土地湿润剩余时间 = this.remainingWaterDuration / 60;
         let 水分保持时间 = this.totalMaturityTime / 3 / 60;
-        if (水分保持时间 >= 目前剩余收货时间) {
-            // 此公式仅适用于： 水分保持时间 >= 目前剩余收货时间
-            this.距离当前时间剩余收获时间 = (12 * 水分保持时间 * 目前剩余收货时间 - 收获周期 * 水分保持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分保持时间 +  收获周期);
+        if (水分保持时间 >= 目前剩余收获时间) {
+            // 此公式仅适用于： 水分保持时间 >= 目前剩余收获时间 并且目前浇水后不能熟
+            this.距离当前时间剩余收获时间 = (12 * 水分保持时间 * 目前剩余收获时间 - 收获周期 * 水分保持时间 + 收获周期 * 目前土地湿润剩余时间) / (12 * 水分保持时间 +  收获周期);
         } else {
             this.距离当前时间剩余收获时间 = NaN;
         }
@@ -559,13 +559,90 @@ let SuggestedWateringTimeClassArray = [
 // 以下是调用显示
 
 /**
+ * 修改地址栏 URL 参数,不跳转
+ * 
+ * @param {string} name 参数名
+ * @param {string} value 参数值
+ * @param {boolean} flag 是否返回，不提供则直接地址栏 URL 参数
+ * @returns 
+ */
+function changeURLStatic(name, value, flag) {
+    let url = window.location.search;
+    let reg = eval('/([\?|&]' + name + '=)[^&]*/gi');
+    // value = value.toString().replace(/(^\s*)|(\s*$)/g, "");  //移除首尾空格
+    let url2 = "";
+    if (value === undefined || value === null) {
+        url2 = url.replace(reg, '');  //正则替换
+    } else {
+        if (url.match(reg)) {
+            url2 = url.replace(reg, '$1' + value);  //正则替换
+        } else {
+            url2 = url + (url.indexOf('?') > -1 ? '&' : '?') + name + '=' + value;  //没有参数添加参数
+        }
+    }
+    url2 = window.location.origin + window.location.pathname + url2 + window.location.hash;
+    if (flag) {
+        return url2;
+    }
+    history.replaceState(null, null, url2);  //替换地址栏
+}
+//当前页面地址
+//index.php?m=p&a=index&classify_id=225&search=i
+//执行修改
+//changeURLStatic('search', '99999');
+//修改后页面地址
+//index.php?m=p&a=index&classify_id=225&search=99999
+
+
+//获取 URL get 参数
+function getQueryVariable(variable) {
+    let query = window.location.search.substring(1);
+    let vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return decodeURI(pair[1]);
+        }
+    }
+    return null;
+}
+/*
+使用实例
+url 实例：
+
+http://www.runoob.com/index.php?id=1&image=awesome.jpg
+调用 getQueryVariable("id") 返回 1。
+
+调用 getQueryVariable("image") 返回 "awesome.jpg"。
+*/
+
+/**
+ * 防止 Element 事件后 value 为空字符串
+ * 
+ * @param {string} defaultValue 该 Element 默认 value
+ * @returns {Function} 添加在事件监听的阻止为空的函数
+ */
+function valueNoEmptyString(defaultValue) {
+    let beforeValue = defaultValue;
+    return (function (event) {
+        if (!event.target.value) {
+            event.stopImmediatePropagation();
+            setTimeout(() => {
+                event.target.value = beforeValue;
+            }, 0);
+        } else {
+            beforeValue = event.target.value;
+        }
+    });
+}
+
+/**
  * 获取用户输入的作物成熟时间
  * 
  * @returns {number} 总成熟时间(s)
  */
 function getTotalMaturityTime() {
-    let totalMaturityTimeSelectElement = document.getElementById("totalMaturityTimeSelect");
-    return parseInt(totalMaturityTimeSelectElement.value);
+    return parseInt(document.getElementById("totalMaturityTimeSelect").value);
 }
 
 /**
@@ -596,35 +673,37 @@ function getRemainingWaterDuration() {
 /**
  * 判断用户输入是否正确
  * 
+ * @param {number} totalMaturityTime 总成熟时间(s)
+ * @param {number} remainingMaturityTime 剩余成熟时间(s)
+ * @param {number} remainingWaterDuration 剩余水分维持时间(s)
+ * @param {boolean} showErrorInformation 是否显示数据错误信息弹框，默认 true(显示)
  * @returns {boolean} true: 输入正确 false: 输入错误
  */
-function checkTimeInput() {
+function checkTimeInput(totalMaturityTime, remainingMaturityTime, remainingWaterDuration, showErrorInformation=true) {
     // 工具函数
     let formatSeconds = CropInformation.formatSeconds;
-    // 获取用户输入
-    let totalMaturityTime = getTotalMaturityTime(); // 总成熟时间(s)
-    let remainingMaturityTime = getRemainingMaturityTime(); // 剩余成熟时间(s)
-    let remainingWaterDuration = getRemainingWaterDuration();  // 剩余水分维持时间(s)
     // 判断输入是否正确
     if (totalMaturityTime < remainingMaturityTime) {
-        mdui.alert({
-            headline: "剩余成熟时间输入错误",
-            description: `剩余成熟时间(${formatSeconds(remainingMaturityTime)})不能大于该作物的总成熟时间(${formatSeconds(totalMaturityTime)})`,
-            confirmText: "确定",
-            onConfirm: () => {},
-          });
+        if (showErrorInformation) {
+            mdui.alert({
+                headline: "剩余成熟时间输入错误",
+                description: `剩余成熟时间(${formatSeconds(remainingMaturityTime)})不能大于该作物的总成熟时间(${formatSeconds(totalMaturityTime)})`,
+                confirmText: "确定"
+            });
+        }
         return false;
     }
     // 浇水后水分维持时间 (s) = 该类作物总成熟时间 / 3
     let wateringAfterWaterDuration = totalMaturityTime / 3;
     if (remainingWaterDuration > wateringAfterWaterDuration) {
-        mdui.alert({
-            headline: "剩余水分维持时间输入错误",
-            description: `剩余水分维持时间(${formatSeconds(remainingWaterDuration)})不能大于该作物的最大水分维持时间(${formatSeconds(wateringAfterWaterDuration)})`,
-            confirmText: "确定",
-            onConfirm: () => {},
-
-        });
+        if (showErrorInformation) {
+            mdui.alert({
+                headline: "剩余水分维持时间输入错误",
+                description: `剩余水分维持时间(${formatSeconds(remainingWaterDuration)})不能大于该作物的最大水分维持时间(${formatSeconds(wateringAfterWaterDuration)})`,
+                confirmText: "确定"
+    
+            });
+        }
         return false;
     }
     
@@ -718,6 +797,19 @@ document.addEventListener('DOMContentLoaded', () => {
 </mdui-chip>
         `;
         }
+    });
+    // 阻止默认选择框为空字符串
+    [
+        "totalMaturityTimeSelect",
+        "remainingMaturityTimeDaySelect",
+        "remainingMaturityTimeHourSelect",
+        "remainingMaturityTimeMinuteSelect",
+        "remainingMaturityTimeSecondSelect",
+        "remainingWaterDurationHourSelect",
+        "remainingWaterDurationMinuteSelect",
+        "remainingWaterDurationSecondSelect"
+    ].forEach((elementId) => {
+        document.getElementById(elementId).addEventListener("change", valueNoEmptyString(document.getElementById(elementId).value));
     });
     document.getElementById('thanks-span').innerHTML = thanksHTML;
     // 作物信息对话框
@@ -837,18 +929,35 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
+    // 复制链接到剪贴板并显示提示
+    function copyLink() {
+        utilities.copyText(window.location.href);
+        mdui.snackbar({
+            message: "链接已复制到剪贴板",
+            autoCloseDelay: 3000,
+            closeable: true
+        });
+    }
+
+    // 显示分享链接
+    document.getElementById("share-link-button").addEventListener("click", copyLink);
+    function showShareLink() {
+        document.getElementById("share-link-div").style.display = "block";
+    }
+
     // 生成浇水建议
     document.getElementById("generate-watering-suggestion-button").addEventListener("click", () => {
-        if (checkTimeInput()) {
+        // 获取用户输入
+        let totalMaturityTime = getTotalMaturityTime(); // 总成熟时间(s)
+        let remainingMaturityTime = getRemainingMaturityTime(); // 剩余成熟时间(s)
+        let remainingWaterDuration = getRemainingWaterDuration();  // 剩余水分保持时间(s)
+        if (checkTimeInput(totalMaturityTime, remainingMaturityTime, remainingWaterDuration)) {
             mdui.snackbar({
                 message: "正在为您生成浇水建议……",
-                action: "X",
-                onActionClick: () => {}
+                action: "复制链接",
+                onActionClick: copyLink
             });
             askCropInformationDialogElement.open = false;
-            let totalMaturityTime = getTotalMaturityTime(); // 总成熟时间(s)
-            let remainingMaturityTime = getRemainingMaturityTime(); // 剩余成熟时间(s)
-            let remainingWaterDuration = getRemainingWaterDuration();  // 剩余水分保持时间(s)
             let calculationTime = Date.now(); // 当前时间戳
             if (setCalculationTimeSwitchElement.checked) {
                 calculationTime = new Date(document.getElementById("calculation-date-input").value + "T" + document.getElementById("calculation-time-input").value).getTime();
@@ -856,14 +965,66 @@ document.addEventListener('DOMContentLoaded', () => {
             generateWateringSuggestionFunction(
                 totalMaturityTime, remainingMaturityTime, remainingWaterDuration, calculationTime
             );
+            // 修改地址栏 get 参数
+            changeURLStatic("totalMaturityTime" , totalMaturityTime);
+            changeURLStatic("remainingMaturityTime" , remainingMaturityTime);
+            changeURLStatic("remainingWaterDuration" , remainingWaterDuration);
+            changeURLStatic("calculationTime" , calculationTime);
+            // 显示分享链接
+            showShareLink();
         } else {
             mdui.snackbar({
                 message: "输入不合法，请检查输入的时间内容是否正确",
-                action: "X",
-                onActionClick: () => {}
+                closeable: true
             });
         }
         
     });
+
+    // 读取地址栏参数，并显示数据
+    (function () {
+        /**
+         * 判断字符串是不是有效的非负整数
+         * 
+         * @param {string} str 要检测的数字字符串 
+         * @returns {boolean} true: 是有效非负整数 false: 不是有效非负整数
+         */
+        function isInteger(str) {
+            const num = parseInt(str, 10);
+            return !isNaN(num) && num >= 0 && str === num.toString();
+        }
+
+        let totalMaturityTime = getQueryVariable("totalMaturityTime"); // 总成熟时间(s)
+        if (totalMaturityTime === null || !isInteger(totalMaturityTime)) {
+            return;
+        }
+        totalMaturityTime = parseInt(totalMaturityTime);
+
+        let remainingMaturityTime = getQueryVariable("remainingMaturityTime"); // 剩余成熟时间(s)
+        if (remainingMaturityTime === null || !isInteger(remainingMaturityTime)) {
+            return;
+        }
+        remainingMaturityTime = parseInt(remainingMaturityTime);
+
+        let remainingWaterDuration = getQueryVariable("remainingWaterDuration");  // 剩余水分保持时间(s)
+        if (remainingWaterDuration === null || !isInteger(remainingWaterDuration)) {
+            return;
+        }
+        remainingWaterDuration = parseInt(remainingWaterDuration);
+
+        let calculationTime = getQueryVariable("calculationTime");
+        if (calculationTime === null || !isInteger(calculationTime)) {
+            return;
+        }
+        calculationTime = parseInt(calculationTime);
+
+        if (checkTimeInput(totalMaturityTime, remainingMaturityTime, remainingWaterDuration)) {
+            generateWateringSuggestionFunction(
+                totalMaturityTime, remainingMaturityTime, remainingWaterDuration, calculationTime
+            );
+            // 显示分享链接
+            showShareLink();
+        }
+    })();
 });
 

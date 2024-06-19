@@ -58,3 +58,31 @@ utilities.throttle = function (fn, duration=300) {
         }
     }
 }
+
+/**
+ * 复制文字到剪贴板
+ * 
+ * @param {string} text 要复制的文字
+ */
+utilities.copyText = function (text) {
+    if (navigator.clipboard) {
+        utilities.copyText = (text) => {
+            navigator.clipboard.writeText(text)
+        }
+    } else {
+        utilities.copyText = (text) => {
+            var dummy = document.createElement("textarea");
+            // to avoid breaking orgain page when copying more words  
+            // cant copy when adding below this code  
+            // dummy.style.display = 'none'  
+            document.body.appendChild(dummy);
+            // Be careful if you use textarea. It uses html encoding instead of utf8.  
+            // So if your text is in utf8 you might want to change it to be compatible with textarea.  
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+        }
+    }
+    utilities.copyText(text);
+}
