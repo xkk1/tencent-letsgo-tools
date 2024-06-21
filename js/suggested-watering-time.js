@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
             changeURLStatic("tmt" , totalMaturityTime);
             changeURLStatic("rmt" , remainingMaturityTime);
             changeURLStatic("rwd" , remainingWaterDuration);
-            changeURLStatic("ct" , calculationTime);
+            changeURLStatic("ct" , parseInt(calculationTime / 1000));
             // 显示分享链接
             showShareLink();
         } else {
@@ -1023,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (calculationTime === null || !isInteger(calculationTime)) {
             return;
         }
-        calculationTime = parseInt(calculationTime);
+        calculationTime = parseInt(calculationTime) * 1000;
 
         if (checkTimeInput(totalMaturityTime, remainingMaturityTime, remainingWaterDuration)) {
             generateWateringSuggestionFunction(
