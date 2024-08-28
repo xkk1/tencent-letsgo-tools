@@ -658,7 +658,7 @@ function getTotalMaturityTime() {
  * @returns {number} 剩余成熟时间(s)
  */
 function getRemainingMaturityTime() {
-    return ((parseInt(document.getElementById("remainingMaturityTimeDaySelect").value) *12 +
+    return ((parseInt(document.getElementById("remainingMaturityTimeDaySelect").value) * 24 +
         parseInt(document.getElementById("remainingMaturityTimeHourSelect").value)) * 60 + 
         parseInt(document.getElementById("remainingMaturityTimeMinuteSelect").value)) * 60 +
         parseInt(document.getElementById("remainingMaturityTimeSecondSelect").value);
@@ -670,7 +670,7 @@ function getRemainingMaturityTime() {
  * @returns {number} 剩余水分保持时间(s)
  */
 function getRemainingWaterDuration() {
-    return ((/* mparseInt(document.getElementById("remainingWaterDurationDaySelect").value) *12 + 水分不可能保持超过一天 */
+    return ((/* mparseInt(document.getElementById("remainingWaterDurationDaySelect").value) * 24 + 水分不可能保持超过一天 */
         parseInt(document.getElementById("remainingWaterDurationHourSelect").value)) * 60 + 
         parseInt(document.getElementById("remainingWaterDurationMinuteSelect").value)) * 60 +
         parseInt(document.getElementById("remainingWaterDurationSecondSelect").value);
