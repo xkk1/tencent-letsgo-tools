@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         utilities.copyText(newlineText);
         mdui.snackbar({
             message: "已复制到剪贴板，请前往元梦之星粘贴",
+            placement: "top",
             autoCloseDelay: 3000,
             closeable: true
         });
