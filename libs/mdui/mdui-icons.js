@@ -29,3 +29,5 @@ import '@mdui/icons/help.js';
 import '@mdui/icons/help-outline.js';
 // Content Copy
 import '@mdui/icons/content-copy.js';
+// Settings
+import '@mdui/icons/settings.js';

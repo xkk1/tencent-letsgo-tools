@@ -20,6 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // 导航菜单
 const menu = {
     "./index.html": "主页",
+    "通用": {
+        "./common/newline-text.html": "换行文本生成器",
+    },
     "星宝农场工具": {
         "./farm/suggested-watering-time.html": "作物浇水建议",
         // "./farm/experience.html": "农场经验表"
