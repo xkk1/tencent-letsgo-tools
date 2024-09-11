@@ -91,6 +91,11 @@ class SiteLayout extends HTMLElement {
         </mdui-button-icon>
         ${titleHTML}
         <div style="flex-grow: 1"></div>
+        <!-- 复制分享本页 -->
+        <mdui-button-icon id="share-button" title="复制分享本页">
+            <mdui-icon-share--outlined class="outlined"></mdui-icon-share--outlined>
+            <mdui-icon-share class="filled"></mdui-icon-share>
+        </mdui-button-icon>
         <!-- 切换深浅主题 -->
         <mdui-dropdown>
             <mdui-button-icon id="theme-button" slot="trigger" title="切换深浅主题">
@@ -247,6 +252,18 @@ class SiteLayout extends HTMLElement {
         this.shadowRoot.querySelectorAll("color-scheme-card[color]").forEach(element => {
             element.addEventListener("click", () => {
                 changeColorScheme(element.getAttribute("color"));
+            });
+        });
+        // 复制分享本页
+        let shareButtonElement = this.shadowRoot.getElementById("share-button");
+        shareButtonElement.addEventListener("click", () => {
+            let shareText = document.title + " " + document.location.href;
+            utilities.copyText(shareText);
+            mdui.snackbar({
+                message: "已复制链接到剪贴板，快去分享吧",
+                placement: "top",
+                autoCloseDelay: 3000,
+                closeable: true
             });
         });
         // 加载 mdui 中文语言包

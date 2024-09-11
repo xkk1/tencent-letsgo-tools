@@ -31,3 +31,6 @@ import '@mdui/icons/help-outline.js';
 import '@mdui/icons/content-copy.js';
 // Settings
 import '@mdui/icons/settings.js';
+// Share
+import '@mdui/icons/share.js';
+import '@mdui/icons/share--outlined.js';
